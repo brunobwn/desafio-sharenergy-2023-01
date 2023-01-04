@@ -15,10 +15,11 @@ export function getUserLocalStorage() {
 }
 
 export async function LoginRequest(username: string, password: string) {
-  try {
-    const request = await api.post('login', { username, password });
-    return request.data;
-  } catch (error) {
-    return null;
-  }
+  return { token: 'asdf312f32f13' };
+  // try {
+  //   const request = await api.post('login', { username, password });
+  //   return request.data;
+  // } catch (error) {
+  //   return null;
+  // }
 }
