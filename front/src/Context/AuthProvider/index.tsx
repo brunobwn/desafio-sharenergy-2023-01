@@ -1,16 +1,20 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
 import { ContextProps, AuthProviderProps, UserProps } from './types';
-import { LoginRequest, setUserLocalStorage } from './util';
+import { getUserLocalStorage, LoginRequest, setUserLocalStorage } from './util';
 
 export const AuthContext = createContext<ContextProps>({} as ContextProps);
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<UserProps | null>();
 
-  async function authenticate(email: string, password: string, persist: boolean) {
-    const response = await LoginRequest(email, password);
+  useEffect(() => {
+    setUser(getUserLocalStorage());
+  }, []);
+
+  async function authenticate(username: string, password: string, persist: boolean) {
+    const response = await LoginRequest(username, password);
     if (response) {
-      const payload = { token: response.token, email };
+      const payload = { token: response.token, username };
       setUser(payload);
       if (persist) setUserLocalStorage(payload);
     }
