@@ -4,7 +4,7 @@ import { useAuth } from '../Context/AuthProvider/useAuth';
 const RequireAuth = ({ children }: { children: JSX.Element }) => {
   const auth = useAuth();
   let location = useLocation();
-  console.log(auth);
+
   if (!auth.username || !auth.token) {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
