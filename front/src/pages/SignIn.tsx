@@ -9,7 +9,7 @@ const SignIn: React.FC = () => {
   const [error, setError] = useState('');
   const { authenticate } = useAuth();
 
-  function handleSignIn(e: React.FormEvent) {
+  function handleSignIn(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     authenticate(username, password, lembrar).then((data) => {
       if (typeof data !== 'string') setError('Usuário e/ou senha inválidos');
@@ -48,7 +48,7 @@ const SignIn: React.FC = () => {
               type="checkbox"
               name="lembrar"
               id="lembrar"
-              className="rounded text-cyan focus:border-cyan"
+              className="rounded text-cyan focus:ring-cyan"
               checked={lembrar}
               onChange={() => setLembrar(!lembrar)}
             />
