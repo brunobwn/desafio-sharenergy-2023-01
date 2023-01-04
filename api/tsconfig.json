@@ -7,7 +7,9 @@
     "moduleResolution": "node",
     "outDir": "build",
     "sourceMap": true,
-    "strict": true
+    "strict": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true
   },
   "include": ["src"]
 }
