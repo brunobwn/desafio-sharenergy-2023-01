@@ -15,7 +15,7 @@ const SignIn: React.FC = () => {
     e.preventDefault();
     authenticate(username, password, lembrar);
 
-    navigate('/userslist');
+    navigate('/');
   }
 
   return (

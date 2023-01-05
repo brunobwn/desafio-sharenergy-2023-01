@@ -2,7 +2,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import RequireAuth from './components/RequireAuth';
 import { AuthProvider } from './Context/AuthProvider';
 import SignIn from './pages/SignIn';
-import UsersList from './pages/UsersList';
+import Users from './pages/Users';
 
 function App() {
   return (
@@ -10,10 +10,10 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route
-            path="/UsersList"
+            path="/"
             element={
               <RequireAuth>
-                <UsersList />
+                <Users />
               </RequireAuth>
             }
           />
