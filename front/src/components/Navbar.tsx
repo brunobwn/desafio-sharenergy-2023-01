@@ -19,8 +19,9 @@ const Navbar: React.FC = () => {
           <img src={logo} alt="SharEnergy logo" className="w-32" />
         </Link>
         <nav className="flex flex-wrap items-center justify-center order-2 w-full mt-4 text-base md:mt-0 md:mr-auto md:ml-4 md:w-auto md:border-l md:border-gray-400 md:py-1 md:pl-4">
-          {pages.map((page) => (
+          {pages.map((page, index) => (
             <NavLink
+              key={index}
               to={page.link}
               className={({ isActive }) =>
                 isActive ? 'mr-5 font-semibold hover:text-gray-900' : 'mr-5 hover:text-gray-900'
