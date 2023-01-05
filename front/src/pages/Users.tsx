@@ -32,18 +32,24 @@ const Users: React.FC = () => {
   const [users, setUsers] = useState<randomUserInterface[]>([]);
   const [usersFiltred, setUsersFiltered] = useState<randomUserInterface[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   useEffect(() => {
-    randomUserApi.get('?nat=br&inc=name,email,dob,login,picture&results=50').then((res) => {
-      const results = res.data.results;
-      results.map((user: randomUserInterface) => {
-        user.name.full = user.name.first + ' ' + user.name.last;
-        return user;
+    randomUserApi
+      .get('?nat=br&inc=name,email,dob,login,picture&results=50')
+      .then((res) => {
+        const results: randomUserInterface[] = res.data.results;
+        results.map((user: randomUserInterface) => {
+          user.name.full = user.name.first + ' ' + user.name.last;
+          return user;
+        });
+        setUsers(results);
+        setUsersFiltered(results);
+        setLoading(false);
+      })
+      .catch((error) => {
+        setError(String(error));
       });
-      setUsers(results);
-      setUsersFiltered(results);
-      setLoading(false);
-    });
   }, []);
 
   function handleSearch(e: React.ChangeEvent<HTMLInputElement>) {
@@ -58,6 +64,7 @@ const Users: React.FC = () => {
       if (user.name.full?.toLowerCase().includes(searchString.toLowerCase())) return true;
       if (user.email.toLowerCase().includes(searchString.toLowerCase())) return true;
       if (user.login.username.toLowerCase().includes(searchString.toLowerCase())) return true;
+      return false;
     });
 
     setUsersFiltered(filtred);
@@ -65,7 +72,7 @@ const Users: React.FC = () => {
   return (
     <div className="w-screen min-h-screen bg-gray-100">
       <Navbar />
-      <main className="container min-h-full px-5 mx-auto mt-4">
+      <main className="container min-h-full px-5 mx-auto mt-4 ">
         <div className="flex flex-col items-center justify-between sm:flex-row">
           <h1 className="mb-3 text-xl sm:mb-0 md:mb-0">Lista de usuários</h1>
           <fieldset className="relative w-full max-w-xs">
@@ -107,6 +114,11 @@ const Users: React.FC = () => {
               </article>
             ))}
           </section>
+        )}
+        {error !== '' && (
+          <div className="mt-4 text-sm text-center text-red-800">
+            Não foi possível consultar API
+          </div>
         )}
       </main>
     </div>
