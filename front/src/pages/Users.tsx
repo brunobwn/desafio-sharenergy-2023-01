@@ -70,12 +70,16 @@ const Users: React.FC = () => {
       return;
     }
 
-    const filtered = users.filter((user) => {
-      if (user.name.full?.toLowerCase().includes(searchString.toLowerCase())) return true;
-      if (user.email.toLowerCase().includes(searchString.toLowerCase())) return true;
-      if (user.login.username.toLowerCase().includes(searchString.toLowerCase())) return true;
-      return false;
-    });
+    function includesSearchString(string1: string, string2: string) {
+      return string1.toLowerCase().includes(string2.toLowerCase());
+    }
+
+    const filtered = users.filter(
+      (user) =>
+        includesSearchString(user.name.full!, searchString) ||
+        includesSearchString(user.email, searchString) ||
+        includesSearchString(user.login.username, searchString)
+    );
 
     setUsersFiltered(filtered);
     setPaginaAtual(1);
@@ -86,8 +90,9 @@ const Users: React.FC = () => {
     setPaginaAtual(paginaAtual - 1);
   }
 
+  const ultimaPagina = Math.ceil(usersFiltered.length / NUM_REGISTRO_POR_PAGINA);
+
   function handlePaginaSeguinte() {
-    const ultimaPagina = Math.ceil(usersFiltered.length / NUM_REGISTRO_POR_PAGINA);
     if (paginaAtual === ultimaPagina) return;
     setPaginaAtual(paginaAtual + 1);
   }
@@ -126,7 +131,7 @@ const Users: React.FC = () => {
                   />
                 </div>
                 <div className="flex flex-col justify-center w-2/3 break-words">
-                  <p className="font-semibold">{user.name.first + ' ' + user.name.last}</p>
+                  <p className="font-semibold">{user.name.full}</p>
                   <p className="text-sm italic opacity-80">{user.dob.age + ' anos'}</p>
                   <p className="text-sm">
                     <span className="text-xs opacity-70">User: </span>
@@ -149,12 +154,14 @@ const Users: React.FC = () => {
               </span>
               <div className="inline-flex mt-2 xs:mt-0">
                 <button
+                  disabled={paginaAtual === 1}
                   onClick={() => handlePaginaAnterior()}
                   className="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-600 bg-gray-100 rounded-l hover:bg-gray-200 focus:outline-none">
                   <FaArrowLeft className="mr-2 text-gray-600" />
                   Anterior
                 </button>
                 <button
+                  disabled={paginaAtual === ultimaPagina}
                   onClick={() => handlePaginaSeguinte()}
                   className="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-600 bg-gray-100 border-0 border-l border-gray-400 rounded-r hover:bg-gray-200 focus:outline-none">
                   Próximo
