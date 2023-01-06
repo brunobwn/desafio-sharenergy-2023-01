@@ -4,11 +4,12 @@ import { FaSearch } from 'react-icons/fa';
 import { CgSpinner } from 'react-icons/cg';
 import { randomUserApi } from '../api';
 import Paginador from '../components/Paginador';
+import CardUser from '../components/CardUser';
 
 const NUM_REGISTRO_POR_PAGINA = 12;
 const NUM_REGISTRO_CONSULTA_API = 150;
 
-interface randomUserInterface {
+export interface randomUserInterface {
   name: {
     title: string;
     first: string;
@@ -120,27 +121,15 @@ const Users: React.FC = () => {
         ) : (
           <section className="grid grid-cols-1 gap-4 mt-4 sm:grid-cols-2 sm:gap-2 lg:grid-cols-3 xl:grid-cols-4">
             {pageItems.map((user) => (
-              <article
-                className="flex items-center gap-2 p-4 transition-shadow duration-300 ease-in-out bg-white rounded-lg shadow-lg hover:shadow-xl md:gap-3"
-                key={user.login.uuid}>
-                <div className="w-16 h-16 overflow-hidden border-2 rounded-full shadow-sm">
-                  <img
-                    src={user.picture.large}
-                    alt={user.name.first + ' ' + user.name.last + ' foto'}
-                  />
-                </div>
-                <div className="flex flex-col justify-center w-2/3 break-words">
-                  <p className="font-semibold">{user.name.full}</p>
-                  <p className="text-sm italic opacity-80">{user.dob.age + ' anos'}</p>
-                  <p className="text-sm">
-                    <span className="text-xs opacity-70">User: </span>
-                    {user.login.username}
-                  </p>
-                  <p className="text-sm">{user.email}</p>
-                </div>
-              </article>
+              <CardUser
+                key={user.login.uuid}
+                fullName={user.name.full!}
+                picture={user.picture.large}
+                age={user.dob.age}
+                username={user.login.username}
+                email={user.email}
+              />
             ))}
-            {/* Paginador */}
             <Paginador
               qtdPorPagina={NUM_REGISTRO_POR_PAGINA}
               qtdRegistros={usersFiltered.length}
