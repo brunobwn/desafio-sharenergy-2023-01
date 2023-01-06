@@ -143,15 +143,19 @@ const Users: React.FC = () => {
             ))}
             {/* Paginador */}
             <div className="flex flex-col items-center mt-2 sm:col-span-2 lg:col-span-3 xl:col-span-4">
-              <span className="text-sm text-gray-700">
-                Visualizando <span className="font-semibold text-gray-900 ">{inicioIndex + 1}</span>{' '}
-                a{' '}
-                <span className="font-semibold text-gray-900 ">
-                  {fimIndex <= usersFiltered.length ? fimIndex : usersFiltered.length}
-                </span>{' '}
-                de <span className="font-semibold text-gray-900">{usersFiltered.length}</span>{' '}
-                registros
-              </span>
+              {usersFiltered.length > 0 ? (
+                <span className="text-sm text-gray-700">
+                  Visualizando{' '}
+                  <span className="font-semibold text-gray-900 ">{inicioIndex + 1}</span> a{' '}
+                  <span className="font-semibold text-gray-900 ">
+                    {fimIndex <= usersFiltered.length ? fimIndex : usersFiltered.length}
+                  </span>{' '}
+                  de <span className="font-semibold text-gray-900">{usersFiltered.length}</span>{' '}
+                  registros
+                </span>
+              ) : (
+                <span className="text-sm text-gray-700">Nenhum registro encontrado</span>
+              )}
               <div className="inline-flex mt-2 xs:mt-0">
                 <button
                   disabled={paginaAtual === 1}
@@ -161,7 +165,7 @@ const Users: React.FC = () => {
                   Anterior
                 </button>
                 <button
-                  disabled={paginaAtual === ultimaPagina}
+                  disabled={paginaAtual === ultimaPagina || !usersFiltered.length}
                   onClick={() => handlePaginaSeguinte()}
                   className="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-600 bg-gray-100 border-0 border-l border-gray-400 rounded-r hover:bg-gray-200 focus:outline-none">
                   Próximo
