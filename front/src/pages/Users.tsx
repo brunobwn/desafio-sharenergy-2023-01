@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
-import { FaSearch, FaArrowLeft, FaArrowRight } from 'react-icons/fa';
+import { FaSearch } from 'react-icons/fa';
 import { CgSpinner } from 'react-icons/cg';
 import { randomUserApi } from '../api';
+import Paginador from '../components/Paginador';
 
 const NUM_REGISTRO_POR_PAGINA = 12;
 const NUM_REGISTRO_CONSULTA_API = 150;
@@ -41,7 +42,6 @@ const Users: React.FC = () => {
 
   const inicioIndex = (paginaAtual - 1) * NUM_REGISTRO_POR_PAGINA;
   const fimIndex = paginaAtual * NUM_REGISTRO_POR_PAGINA;
-
   const pageItems = usersFiltered.slice(inicioIndex, fimIndex);
 
   useEffect(() => {
@@ -90,9 +90,8 @@ const Users: React.FC = () => {
     setPaginaAtual(paginaAtual - 1);
   }
 
-  const ultimaPagina = Math.ceil(usersFiltered.length / NUM_REGISTRO_POR_PAGINA);
-
   function handlePaginaSeguinte() {
+    const ultimaPagina = Math.ceil(usersFiltered.length / NUM_REGISTRO_POR_PAGINA);
     if (paginaAtual === ultimaPagina) return;
     setPaginaAtual(paginaAtual + 1);
   }
@@ -142,37 +141,15 @@ const Users: React.FC = () => {
               </article>
             ))}
             {/* Paginador */}
-            <div className="flex flex-col items-center mt-2 sm:col-span-2 lg:col-span-3 xl:col-span-4">
-              {usersFiltered.length > 0 ? (
-                <span className="text-sm text-gray-700">
-                  Visualizando{' '}
-                  <span className="font-semibold text-gray-900 ">{inicioIndex + 1}</span> a{' '}
-                  <span className="font-semibold text-gray-900 ">
-                    {fimIndex <= usersFiltered.length ? fimIndex : usersFiltered.length}
-                  </span>{' '}
-                  de <span className="font-semibold text-gray-900">{usersFiltered.length}</span>{' '}
-                  registros
-                </span>
-              ) : (
-                <span className="text-sm text-gray-700">Nenhum registro encontrado</span>
-              )}
-              <div className="inline-flex mt-2 xs:mt-0">
-                <button
-                  disabled={paginaAtual === 1}
-                  onClick={() => handlePaginaAnterior()}
-                  className="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-600 bg-gray-100 rounded-l hover:bg-gray-200 focus:outline-none">
-                  <FaArrowLeft className="mr-2 text-gray-600" />
-                  Anterior
-                </button>
-                <button
-                  disabled={paginaAtual === ultimaPagina || !usersFiltered.length}
-                  onClick={() => handlePaginaSeguinte()}
-                  className="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-600 bg-gray-100 border-0 border-l border-gray-400 rounded-r hover:bg-gray-200 focus:outline-none">
-                  Próximo
-                  <FaArrowRight className="ml-2 text-gray-600" />
-                </button>
-              </div>
-            </div>
+            <Paginador
+              qtdPorPagina={NUM_REGISTRO_POR_PAGINA}
+              qtdRegistros={usersFiltered.length}
+              paginaAtual={paginaAtual}
+              inicioIndex={inicioIndex}
+              fimIndex={fimIndex}
+              handlePaginaAnterior={handlePaginaAnterior}
+              handlePaginaSeguinte={handlePaginaSeguinte}
+            />
           </section>
         )}
         {error !== '' && (
