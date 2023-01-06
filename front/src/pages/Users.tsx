@@ -4,6 +4,9 @@ import { FaSearch, FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import { CgSpinner } from 'react-icons/cg';
 import { randomUserApi } from '../api';
 
+const NUM_REGISTRO_POR_PAGINA = 12;
+const NUM_REGISTRO_CONSULTA_API = 150;
+
 interface randomUserInterface {
   name: {
     title: string;
@@ -34,9 +37,16 @@ const Users: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
+  const [paginaAtual, setPaginaAtual] = useState(1);
+
+  const inicioIndex = (paginaAtual - 1) * NUM_REGISTRO_POR_PAGINA;
+  const fimIndex = paginaAtual * NUM_REGISTRO_POR_PAGINA;
+
+  const pageItems = usersFiltered.slice(inicioIndex, fimIndex);
+
   useEffect(() => {
     randomUserApi
-      .get('?nat=br&inc=name,email,dob,login,picture&results=50')
+      .get(`?nat=br&inc=name,email,dob,login,picture&results=${NUM_REGISTRO_CONSULTA_API}`)
       .then((res) => {
         const results: randomUserInterface[] = res.data.results;
         results.map((user: randomUserInterface) => {
@@ -68,7 +78,20 @@ const Users: React.FC = () => {
     });
 
     setUsersFiltered(filtered);
+    setPaginaAtual(1);
   }
+
+  function handlePaginaAnterior() {
+    if (paginaAtual === 1) return;
+    setPaginaAtual(paginaAtual - 1);
+  }
+
+  function handlePaginaSeguinte() {
+    const ultimaPagina = Math.ceil(usersFiltered.length / NUM_REGISTRO_POR_PAGINA);
+    if (paginaAtual === ultimaPagina) return;
+    setPaginaAtual(paginaAtual + 1);
+  }
+
   return (
     <div className="min-h-screen pb-8 bg-gray-100">
       <Navbar />
@@ -91,8 +114,8 @@ const Users: React.FC = () => {
             <CgSpinner className="w-12 h-12 animate-spin" color="#2da9a9" />
           </div>
         ) : (
-          <section className="grid grid-cols-1 gap-4 mt-4 xxl:grid-cols-4 sm:grid-cols-2 sm:gap-2 lg:grid-cols-3">
-            {usersFiltered.map((user) => (
+          <section className="grid grid-cols-1 gap-4 mt-4 sm:grid-cols-2 sm:gap-2 lg:grid-cols-3 xl:grid-cols-4">
+            {pageItems.map((user) => (
               <article
                 className="flex items-center gap-2 p-4 transition-shadow duration-300 ease-in-out bg-white rounded-lg shadow-lg hover:shadow-xl md:gap-3"
                 key={user.login.uuid}>
@@ -114,19 +137,26 @@ const Users: React.FC = () => {
               </article>
             ))}
             {/* Paginador */}
-            <div className="flex flex-col items-center col-span-3 mt-2">
+            <div className="flex flex-col items-center mt-2 sm:col-span-2 lg:col-span-3 xl:col-span-4">
               <span className="text-sm text-gray-700">
-                Visualizando <span className="font-semibold text-gray-900 ">1</span> a{' '}
-                <span className="font-semibold text-gray-900 ">10</span> de{' '}
-                <span className="font-semibold text-gray-900">{usersFiltered.length}</span>{' '}
+                Visualizando <span className="font-semibold text-gray-900 ">{inicioIndex + 1}</span>{' '}
+                a{' '}
+                <span className="font-semibold text-gray-900 ">
+                  {fimIndex <= usersFiltered.length ? fimIndex : usersFiltered.length}
+                </span>{' '}
+                de <span className="font-semibold text-gray-900">{usersFiltered.length}</span>{' '}
                 registros
               </span>
               <div className="inline-flex mt-2 xs:mt-0">
-                <button className="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-600 bg-white rounded-l hover:bg-gray-100">
+                <button
+                  onClick={() => handlePaginaAnterior()}
+                  className="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-600 bg-gray-100 rounded-l hover:bg-gray-200 focus:outline-none">
                   <FaArrowLeft className="mr-2 text-gray-600" />
                   Anterior
                 </button>
-                <button className="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-600 bg-white border-0 border-l border-gray-400 rounded-r hover:bg-gray-200">
+                <button
+                  onClick={() => handlePaginaSeguinte()}
+                  className="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-600 bg-gray-100 border-0 border-l border-gray-400 rounded-r hover:bg-gray-200 focus:outline-none">
                   Próximo
                   <FaArrowRight className="ml-2 text-gray-600" />
                 </button>

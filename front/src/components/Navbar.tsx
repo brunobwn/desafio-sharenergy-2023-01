@@ -13,12 +13,12 @@ const Navbar: React.FC = () => {
   const auth = useAuth();
 
   return (
-    <header className="text-gray-600 body-font">
-      <div className="container flex flex-wrap items-center p-5 mx-auto">
-        <Link to="/" className="flex items-center w-1/2 md:w-auto">
+    <header className="body-font text-gray-600">
+      <div className="container mx-auto flex flex-wrap items-center p-5">
+        <Link to="/" className="flex w-1/2 items-center md:w-auto">
           <img src={logo} alt="SharEnergy logo" className="w-32" />
         </Link>
-        <nav className="flex flex-wrap items-center justify-center order-2 w-full mt-4 text-base md:mt-0 md:mr-auto md:ml-4 md:w-auto md:border-l md:border-gray-400 md:py-1 md:pl-4">
+        <nav className="order-2 mt-4 flex w-full flex-wrap items-center justify-center text-base md:mt-0 md:mr-auto md:ml-4 md:w-auto md:border-l md:border-gray-400 md:py-1 md:pl-4">
           {pages.map((page, index) => (
             <NavLink
               key={index}
@@ -30,10 +30,10 @@ const Navbar: React.FC = () => {
             </NavLink>
           ))}
         </nav>
-        <div className="flex items-center justify-end order-1 w-1/2 md:order-3 md:w-auto">
+        <div className="order-1 flex w-1/2 items-center justify-end md:order-3 md:w-auto">
           <button
             onClick={() => auth.logout()}
-            className="inline-flex items-center px-3 py-1 text-base bg-gray-100 border-0 rounded shadow-sm hover:bg-gray-200 focus:outline-none">
+            className="inline-flex items-center rounded border-0 bg-gray-100 px-3 py-1 text-base shadow-sm hover:bg-gray-200 focus:outline-none">
             Sair
             <svg
               fill="none"
@@ -41,7 +41,7 @@ const Navbar: React.FC = () => {
               stroke-linecap="round"
               stroke-linejoin="round"
               stroke-width="2"
-              className="w-4 h-4 ml-1"
+              className="ml-1 h-4 w-4"
               viewBox="0 0 24 24">
               <path d="M5 12h14M12 5l7 7-7 7"></path>
             </svg>
