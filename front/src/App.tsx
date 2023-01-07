@@ -1,6 +1,7 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import RequireAuth from './components/RequireAuth';
 import { AuthProvider } from './Context/AuthProvider';
+import Dog from './pages/Dog';
 import SignIn from './pages/SignIn';
 import Status from './pages/Status';
 import Users from './pages/Users';
@@ -23,6 +24,14 @@ function App() {
             element={
               <RequireAuth>
                 <Status />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/dog"
+            element={
+              <RequireAuth>
+                <Dog />
               </RequireAuth>
             }
           />
