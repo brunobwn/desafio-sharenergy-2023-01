@@ -71,6 +71,7 @@ const Users: React.FC = () => {
       return;
     }
 
+    // compare if string2 exists in string1
     function includesSearchString(string1: string, string2: string) {
       return string1.toLowerCase().includes(string2.toLowerCase());
     }
@@ -98,28 +99,28 @@ const Users: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen pb-8 bg-gray-100">
+    <div className="min-h-screen bg-gray-100 pb-8">
       <Navbar />
-      <main className="container min-h-full px-5 mx-auto mt-4">
+      <main className="container mx-auto mt-4 min-h-full px-5">
         <div className="flex flex-col items-center justify-between sm:flex-row">
           <h1 className="mb-3 text-xl sm:mb-0 md:mb-0">Lista de usuários</h1>
           <fieldset className="relative w-full max-w-xs">
             <input
               type="text"
               name="searchUser"
-              className="w-full pr-10 border rounded-lg shadow-sm border-cyan focus:border-cyan focus:ring-1 focus:ring-cyan"
+              className="w-full rounded-lg border border-cyan pr-10 shadow-sm focus:border-cyan focus:ring-1 focus:ring-cyan"
               placeholder="Pesquisar"
               onChange={(e) => handleSearch(e)}
             />
-            <FaSearch className="absolute -translate-y-1/2 right-4 top-1/2" color="#2da9a9" />
+            <FaSearch className="absolute right-4 top-1/2 -translate-y-1/2" color="#2da9a9" />
           </fieldset>
         </div>
         {loading ? (
-          <div className="grid p-8 mt-4 place-items-center md:mt-12">
-            <CgSpinner className="w-12 h-12 animate-spin" color="#2da9a9" />
+          <div className="mt-4 grid place-items-center p-8 md:mt-12">
+            <CgSpinner className="h-12 w-12 animate-spin" color="#2da9a9" />
           </div>
         ) : (
-          <section className="grid grid-cols-1 gap-4 mt-4 sm:grid-cols-2 sm:gap-2 lg:grid-cols-3 xl:grid-cols-4">
+          <section className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-2 lg:grid-cols-3 xl:grid-cols-4">
             {pageItems.map((user) => (
               <CardUser
                 key={user.login.uuid}
@@ -142,7 +143,7 @@ const Users: React.FC = () => {
           </section>
         )}
         {error !== '' && (
-          <div className="mt-4 text-sm text-center text-red-800">
+          <div className="mt-4 text-center text-sm text-red-800">
             Não foi possível consultar API
           </div>
         )}
