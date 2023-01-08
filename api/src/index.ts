@@ -1,22 +1,31 @@
+import 'dotenv/config';
 import 'express-async-errors';
+import mongoose from 'mongoose';
 import express from 'express';
 import routes from './routes';
 import { errorMiddleware } from './middlewares/error';
 
-const mangoose = require('mangoose');
+const app = express();
 
-mangoose
-  .connect(process.env.MONGODB_URL)
+app.use(express.json());
+
+app.use(routes);
+// app.use(errorMiddleware);
+
+mongoose.set('strictQuery', false);
+
+const db_user = process.env.DB_USER || 'admin';
+const db_password = encodeURIComponent(process.env.DB_PASSWORD || '');
+const db_host = process.env.DB_HOST || 'localhost';
+const db_name = process.env.DB_NAME || 'database';
+
+mongoose
+  .connect(
+    `mongodb+srv://${db_user}:${db_password}@${db_host}/${db_name}?retryWrites=true&w=majority`
+  )
   .then(() => {
-    const app = express();
-
-    app.use(express.json());
-
-    app.use(routes);
-
-    // app.use(errorMiddleware);
-    app.listen(process.env.PORT, () =>
-      console.log(`Servidor rodando em: http://localhost:${process.env.PORT} 🔥`)
+    app.listen(process.env.SERVER_PORT ?? 3000, () =>
+      console.log(`Servidor rodando em: http://localhost:${process.env.SERVER_PORT ?? 3000} 🔥`)
     );
   })
   .catch((err: Error) => console.log(err));
