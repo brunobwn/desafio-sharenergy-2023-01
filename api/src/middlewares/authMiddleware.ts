@@ -1,11 +1,10 @@
-import { ObjectID } from 'typeorm';
 import { userRepository } from './../app/repositories/UserRepository';
 import { NextFunction, Request, Response } from 'express';
 import { UnauthorizedError } from '../helpers/api-errors';
 import jwt from 'jsonwebtoken';
 
 type JwtPayload = {
-  _id: ObjectID;
+  id: string;
 };
 
 export const authMiddleware = async (req: Request, res: Response, next: NextFunction) => {
@@ -17,9 +16,9 @@ export const authMiddleware = async (req: Request, res: Response, next: NextFunc
 
   const token = authorization.split(' ')[1];
 
-  const { _id } = jwt.verify(token, process.env.JWT_PASS ?? '') as JwtPayload;
+  const { id } = jwt.verify(token, process.env.JWT_PASS ?? '') as JwtPayload;
 
-  const user = await userRepository.findOneBy({ _id });
+  const user = await userRepository.findOneBy({ id });
 
   if (!user) {
     throw new UnauthorizedError('Não autorizado');

@@ -10,7 +10,7 @@ export const AppDataSource = new DataSource({
   database: process.env.MONGODB_DATABASE,
   useUnifiedTopology: true,
   synchronize: true,
-  logging: true,
+  logging: ['query', 'error'],
   entities: [`${__dirname}/**/entities/*.{ts,js}`],
   migrations: [`${__dirname}/**/database/migrations/*.{ts,js}`],
 });
