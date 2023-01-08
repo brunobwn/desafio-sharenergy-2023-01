@@ -8,6 +8,7 @@ const pages = [
   { name: 'Users List', link: '/' },
   { name: 'Status Code', link: '/status' },
   { name: 'Random Dog', link: '/dog' },
+  { name: 'Clients', link: '/clients' },
 ];
 
 const Navbar: React.FC = () => {
