@@ -7,6 +7,7 @@ const port = process.env.TYPEORM_PORT as number | undefined;
 export const AppDataSource = new DataSource({
   type: 'mongodb',
   url: process.env.MONGODB_URL,
+  database: process.env.MONGODB_DATABASE,
   useUnifiedTopology: true,
   synchronize: true,
   logging: true,
