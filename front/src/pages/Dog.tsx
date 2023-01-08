@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { CgSpinner } from 'react-icons/cg';
 import Navbar from '../components/Navbar';
 
@@ -17,6 +17,10 @@ const Dog: React.FC = () => {
     });
   }
 
+  useEffect(() => {
+    handleNewDog();
+  }, []);
+
   return (
     <div className="min-h-screen pb-8 bg-gray-100">
       <Navbar />
@@ -27,7 +31,7 @@ const Dog: React.FC = () => {
             type="submit"
             className="px-3 py-2 mt-4 font-bold tracking-wider text-white border rounded-lg shadow-sm bg-cyan opacity-90 hover:opacity-100 hover:shadow-lg focus:border-cyan focus:ring-1 focus:ring-cyan"
             onClick={handleNewDog}>
-            Gimme a new Dog!!!
+            Gimme a new Dog!!
           </button>
           {loading ? (
             <div className="grid p-8 mt-8 place-items-center md:mt-12">
