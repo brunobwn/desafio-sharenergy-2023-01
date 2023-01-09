@@ -23,7 +23,7 @@ export class AuthController {
 
     const resUser = { _id: user._id, username: user.username };
 
-    const token = jwt.sign(resUser, process.env.JWT_PASS ?? 'MUDARSECRET', {
+    const token = jwt.sign(resUser, process.env.JWT_SECRET || 'MUDAR_SECRET', {
       expiresIn: '1d',
     });
 
