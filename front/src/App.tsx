@@ -37,7 +37,7 @@ function App() {
             }
           />
           <Route
-            path="/dogS"
+            path="/clients"
             element={
               <RequireAuth>
                 <Clients />
