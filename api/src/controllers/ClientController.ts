@@ -1,7 +1,6 @@
 import { Client } from './../models/Client';
 import { BadRequestError, ConflictError } from './../helpers/api-errors';
 import 'dotenv/config';
-import jwt from 'jsonwebtoken';
 import { Request, Response } from 'express';
 import { looksLikeMail } from '../util/util';
 
@@ -12,7 +11,10 @@ export class ClientController {
   }
 
   async getOne(req: Request, res: Response) {
-    return res.status(200).json({ bateu: 'voltou' });
+    const id = req.params.id;
+    const client = await Client.findById(id);
+
+    return res.status(200).json(client);
   }
 
   async create(req: Request, res: Response) {
