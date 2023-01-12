@@ -1,3 +1,4 @@
+import { AxiosError } from 'axios';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import logo from '../assets/logo_color.png';
@@ -19,7 +20,8 @@ const SignIn: React.FC = () => {
       .then(() => {
         navigate('/');
       })
-      .catch((error: Error) => {
+      .catch((error: AxiosError) => {
+        console.log(error);
         setError(error.message);
       });
   }
