@@ -18,7 +18,7 @@ export class ClientController {
   }
 
   async create(req: Request, res: Response) {
-    const { nome, email, telefone, endereco, cpf } = req.body;
+    const { _id, nome, email, telefone, endereco, cpf } = req.body;
 
     if (nome.length < 3) {
       throw new BadRequestError('O campo Nome precisa ter no mínimo 3 letras');
@@ -28,14 +28,24 @@ export class ClientController {
       throw new BadRequestError('Campo E-mail inválido');
     }
 
-    const existClient = await Client.findOne({ email });
-    if (existClient) {
-      throw new ConflictError('Já existe um cliente cadastrado neste e-mail!');
-    }
-
     if (!telefone) throw new BadRequestError('O campo telefone é obrigatório');
     if (!endereco) throw new BadRequestError('O campo endereço é obrigatório');
     if (!cpf) throw new BadRequestError('O campo telefone é obrigatório');
+
+    const existClient = await Client.findOne({ email });
+
+    if (existClient && existClient._id !== _id) {
+      throw new ConflictError('Já existe um cliente cadastrado neste e-mail!');
+    }
+
+    if (_id) {
+      const updatedClient = await Client.findOneAndUpdate(
+        { _id },
+        { nome, email, telefone, endereco, cpf, editedAt: Date.now() }
+      );
+      updatedClient?.save();
+      return res.status(201).json(updatedClient);
+    }
 
     const newClient = await Client.create({ nome, email, telefone, endereco, cpf });
 

@@ -18,7 +18,7 @@ export const authMiddleware = async (req: Request, res: Response, next: NextFunc
 
   const token = authorization.split(' ')[1];
 
-  await jwt.verify(token, process.env.JWT_SECRET || 'MUDAR_SECRET', async (err, decode) => {
+  jwt.verify(token, process.env.JWT_SECRET || 'MUDAR_SECRET', async (err, decode) => {
     if (err) {
       throw new UnauthorizedError('Não autorizado');
     }
