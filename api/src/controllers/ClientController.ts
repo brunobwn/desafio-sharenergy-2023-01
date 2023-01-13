@@ -14,7 +14,23 @@ export class ClientController {
     const id = req.params.id;
     const client = await Client.findById(id);
 
+    if (!client) return res.status(404).json({ message: 'Registro não existe' });
+
     return res.status(200).json(client);
+  }
+
+  async delete(req: Request, res: Response) {
+    const { _id } = req.body;
+    if (!_id) return res.status(400);
+    try {
+      const client = await Client.findByIdAndDelete(_id);
+      if (client) {
+        return res.status(200).json({ message: 'Registro deletado' });
+      }
+      return res.status(404).json({ message: 'Registro não existe' });
+    } catch (error) {
+      return res.status(404).json(error);
+    }
   }
 
   async create(req: Request, res: Response) {

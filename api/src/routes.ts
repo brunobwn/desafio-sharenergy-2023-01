@@ -12,5 +12,6 @@ router.use(authMiddleware);
 router.get('/client', new ClientController().getAll);
 router.get('/client/:id', new ClientController().getOne);
 router.post('/client', new ClientController().create);
+router.delete('/client', new ClientController().delete);
 
 export default router;
