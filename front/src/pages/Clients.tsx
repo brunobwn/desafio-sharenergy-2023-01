@@ -40,6 +40,10 @@ const Clients: React.FC = () => {
   const auth = useAuth();
 
   useEffect(() => {
+    updateClients();
+  }, []);
+
+  function updateClients() {
     api
       .get('client', {
         headers: { Authorization: 'Bearer ' + auth.token },
@@ -48,16 +52,17 @@ const Clients: React.FC = () => {
         if (res.status === 200) {
           setClients(res.data);
           setClientsFiltered(res.data);
-          setLoading(false);
         }
       })
       .catch((error: AxiosError) => {
         if (error.response?.status === 401) auth.logout();
         setLoading(false);
         setError(error.message);
+      })
+      .finally(() => {
+        setLoading(false);
       });
-  }, []);
-
+  }
   function handleSearch(e: React.ChangeEvent<HTMLInputElement>) {
     const searchString = e.target.value;
 
@@ -172,6 +177,7 @@ const Clients: React.FC = () => {
       <ClientModal
         isOpen={modalOpen}
         data={clientEdit}
+        updateClients={updateClients}
         closeModal={handleModalClose}
         preventScroll={true}
         shouldCloseOnOverlayClick={true}
