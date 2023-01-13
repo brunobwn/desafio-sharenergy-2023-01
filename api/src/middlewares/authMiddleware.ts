@@ -1,3 +1,4 @@
+import { BadRequestError } from './../helpers/api-errors';
 import 'dotenv/config';
 import { NextFunction, Request, Response } from 'express';
 import { UnauthorizedError } from '../helpers/api-errors';
@@ -17,17 +18,23 @@ export const authMiddleware = async (req: Request, res: Response, next: NextFunc
 
   const token = authorization.split(' ')[1];
 
-  const { _id } = jwt.verify(token, process.env.JWT_SECRET || 'MUDAR_SECRET') as JwtPayload;
+  await jwt.verify(token, process.env.JWT_SECRET || 'MUDAR_SECRET', async (err, decode) => {
+    if (err) {
+      throw new UnauthorizedError('Não autorizado');
+    }
 
-  const user = await User.findOne({ _id });
+    const { _id } = decode as JwtPayload;
 
-  if (!user) {
-    throw new UnauthorizedError('Não autorizado');
-  }
+    const user = await User.findOne({ _id });
 
-  const { password: _, ...loggedUser } = user;
+    if (!user) {
+      throw new UnauthorizedError('Não autorizado');
+    }
 
-  req.body.user = loggedUser;
+    const { password: _, ...loggedUser } = user;
+
+    req.body.user = loggedUser;
+  });
 
   next();
 };

@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import jwt from 'jsonwebtoken';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 import { UnauthorizedError } from './../helpers/api-errors';
