@@ -46,7 +46,11 @@ const Users: React.FC = () => {
   const pageItems = usersFiltered.slice(inicioIndex, fimIndex);
 
   useEffect(() => {
-    randomUserApi
+    getUsers();
+  }, []);
+
+  async function getUsers() {
+    await randomUserApi
       .get(`?nat=br&inc=name,email,dob,login,picture&results=${NUM_REGISTRO_CONSULTA_API}`)
       .then((res) => {
         const results: randomUserInterface[] = res.data.results;
@@ -61,8 +65,7 @@ const Users: React.FC = () => {
       .catch((error) => {
         setError(String(error));
       });
-  }, []);
-
+  }
   function handleSearch(e: React.ChangeEvent<HTMLInputElement>) {
     const searchString = e.target.value;
 
