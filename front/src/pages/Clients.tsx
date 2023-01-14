@@ -56,7 +56,6 @@ const Clients: React.FC = () => {
       })
       .catch((error: AxiosError) => {
         if (error.response?.status === 401) auth.logout();
-        setLoading(false);
         setError(error.message);
       })
       .finally(() => {
@@ -90,7 +89,6 @@ const Clients: React.FC = () => {
   function handleClickCard(id: string) {
     const client = clients.find((client) => client._id === id);
     if (client) {
-      console.log(client);
       setClientEdit(client);
       setModalOpen(true);
     }
