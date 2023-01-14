@@ -20,7 +20,7 @@ export class ClientController {
   }
 
   async delete(req: Request, res: Response) {
-    const { _id } = req.body;
+    const _id = req.params.id;
     if (!_id) return res.status(400);
     try {
       const client = await Client.findByIdAndDelete(_id);
