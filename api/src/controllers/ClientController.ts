@@ -50,7 +50,7 @@ export class ClientController {
 
     const existClient = await Client.findOne({ email });
 
-    if (existClient && existClient._id !== _id) {
+    if (existClient && String(existClient._id) !== _id) {
       throw new ConflictError('Já existe um cliente cadastrado neste e-mail!');
     }
 
