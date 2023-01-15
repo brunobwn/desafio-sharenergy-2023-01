@@ -19,6 +19,11 @@
 
 Pronto, agora é só acessar a aplicação no navegador através da URL `http://localhost:3000/` (ou conforme sua configuração), e acessar utilizando as credenciais criadas.
 
+#### Vídeo de apresentação da solução
+
+Disponivel temporariamente em:
+[Google Drive](https://drive.google.com/open?id=171ET60b4_VPj-t7lY50j0L1Oi9hCitmt&authuser=brunoberwian%40gmail.com&usp=drive_fs)
+
 ## Desafio Original
 
 Repositório destinado aos interessados em participar do processo seletivo da SHARENERGY 2023/01. As vagas são voltadas para desenvolvimento de aplicações Web e Mobile.
